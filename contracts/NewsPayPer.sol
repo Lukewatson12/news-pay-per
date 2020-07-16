@@ -13,6 +13,7 @@ contract NewsPayPer {
     uint public totalArticles;
 
     function addArticle(string memory description, uint price) public {
+        // shouldnt increment before insertion
         uint articleId = totalArticles +=1;
 
         Article memory article = Article(
