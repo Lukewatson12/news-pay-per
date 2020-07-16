@@ -1,6 +1,11 @@
 const NewsPayPer = artifacts.require("NewsPayPer");
 
+const oneEther = web3.utils.toWei("1");
+const twoEther = web3.utils.toWei("2");
+
 contract("NewsPayPer", accounts => {
+    const alice = accounts[0];
+    const bob = accounts[1];
 
     let newsPayPerInstance;
 
@@ -17,46 +22,45 @@ contract("NewsPayPer", accounts => {
 
         await newsPayPerInstance.addArticle(
             articleDescription,
-            999,
-            {from: accounts[0]}
+            oneEther,
+            {from: alice}
         );
 
         const article = await newsPayPerInstance.getArticle.call(1);
+        const {0: description, 1: cost} = article;
 
         assert.equal(
-            article[0],
+            description,
             articleDescription,
             "Description does not match"
         );
 
-        // This is a very unusual test
         assert.equal(
-            article[1].words[0],
-            999,
+            cost.toString(),
+            oneEther,
             "Unable to find the price for the article"
         );
     });
 
     it("It should store multiple articles and return a list when queried", async () => {
-        // const newsPayPerInstance = await NewsPayPer.deployed();
         let articleDescription = "This is my article name";
 
         await newsPayPerInstance.addArticle(
             articleDescription,
-            999,
-            {from: accounts[0]}
+            oneEther,
+            {from: alice}
         );
 
         await newsPayPerInstance.addArticle(
             articleDescription,
-            100,
-            {from: accounts[0]}
+            oneEther,
+            {from: alice}
         );
 
         await newsPayPerInstance.addArticle(
             articleDescription,
-            123,
-            {from: accounts[0]}
+            twoEther,
+            {from: alice}
         );
 
         const articles = await newsPayPerInstance.getArticles.call();
@@ -66,5 +70,40 @@ contract("NewsPayPer", accounts => {
             3,
             "Total number of articles does not match total saved"
         );
+    });
+
+    it("Should allow a wallet to purchase an article", async () => {
+        let articleDescription = "This is my article name";
+
+        await newsPayPerInstance.addArticle(
+            articleDescription,
+            oneEther,
+            {from: alice}
+        );
+
+        await newsPayPerInstance.purchaseArticle(
+            1,
+            {
+                value: oneEther,
+                from: bob
+            }
+        );
+
+        await newsPayPerInstance.hasArticle(
+            1,
+            {from: alice}
+        ).then(hasArticle => assert.equal(
+            false,
+            hasArticle,
+            "Alice has not purchased the article but owns it"
+        ));
+
+        await newsPayPerInstance.hasArticle(
+            1,
+            {from: bob}
+        ).then(hasArticle => assert.ok(
+            hasArticle,
+            "Bob has purchased the article but does not own it"
+        ));
     });
 });

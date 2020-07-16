@@ -28,8 +28,8 @@ contract NewsPayPer {
     function purchaseArticle(uint _id) public payable {
         Article memory article = articles[_id];
 
-        require(msg.value >= article.price, "Not enough funds to purchase article");
         require(articles[_id].readers[msg.sender] == false, "You have already purchased this article");
+        require(msg.value >= article.price, "Not enough funds to purchase article");
 
         articles[_id].readers[msg.sender] = true;
 
