@@ -1,30 +1,36 @@
-import React from "react";
+import React, {Component} from "react";
 import {DrizzleContext} from "@drizzle/react-plugin";
 import {Drizzle} from "@drizzle/store";
 import drizzleOptions from "./drizzleOptions";
 import "./App.css";
 import News from "./News";
+import Article from "./component/Article/Article";
 
 const drizzle = new Drizzle(drizzleOptions);
 
-const App = () => {
-    return (
-        <DrizzleContext.Provider drizzle={drizzle}>
-            <DrizzleContext.Consumer>
-                {drizzleContext => {
-                    const {drizzle, drizzleState, initialized} = drizzleContext;
+class App extends Component {
+    render() {
+        return (
+            <DrizzleContext.Provider drizzle={drizzle}>
+                <DrizzleContext.Consumer>
+                    {drizzleContext => {
+                        const {drizzle, drizzleState, initialized} = drizzleContext;
 
-                    if (!initialized) {
-                        return "Loading..."
-                    }
+                        if (!initialized) {
+                            return "Loading..."
+                        }
 
-                    return (
-                        <News drizzle={drizzle} drizzleState={drizzleState}/>
-                    )
-                }}
-            </DrizzleContext.Consumer>
-        </DrizzleContext.Provider>
-    );
+                        return (
+                            <div>
+                                {/*<News drizzle={drizzle} drizzleState={drizzleState}/>*/}
+                                <Article id={1} drizzle={drizzle} drizzleState={drizzleState}/>
+                            </div>
+                        )
+                    }}
+                </DrizzleContext.Consumer>
+            </DrizzleContext.Provider>
+        );
+    }
 }
 
 export default App;

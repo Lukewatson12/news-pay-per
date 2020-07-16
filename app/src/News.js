@@ -40,9 +40,11 @@ class News extends Component {
         // let drizzle know we want to call the `set` method with `value`
         const stackId = contract.methods["addArticle"].cacheSend(
             article,
-            12, {
+            12,
+            {
                 from: drizzleState.accounts[0]
-            });
+            }
+        );
 
         // save the `stackId` for later reference
         this.setState({stackId});
@@ -95,7 +97,7 @@ class News extends Component {
         // using the saved `dataKey`, get the variable we're interested in
         const balance = NewsPayPer.getBalanceContract[this.state.dataKeys.getBalanceContract];
         const articles = NewsPayPer.getArticles[this.state.dataKeys.getArticles];
-console.log(articles);
+        console.log(articles);
         if (balance === undefined || articles === undefined) {
             return (
                 <div>No balance</div>
