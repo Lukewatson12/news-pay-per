@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
+import Paper from "@material-ui/core/Paper";
 
 class Article extends Component {
     constructor(props) {
@@ -42,10 +43,10 @@ class Article extends Component {
         }
 
         return (
-            <div>
+            <Paper>
                 <h3>Article id is {this.state.id}</h3>
                 <h3>Article cost is {article.value[1]}</h3>
-            </div>
+            </Paper>
         )
     }
 

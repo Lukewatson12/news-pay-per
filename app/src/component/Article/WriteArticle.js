@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 class WriteArticle extends Component {
 
@@ -15,29 +17,6 @@ class WriteArticle extends Component {
         this.changePrice = this.changePrice.bind(this);
     }
 
-    // renderTransaction() {
-    //     const {transactions, transactionStack} = this.props.drizzleState;
-    //
-    //     const txHash = transactionStack[this.state.transaction.id];
-    //
-    //     if (null === txHash) {
-    //         return (
-    //             <div>No transaction found</div>
-    //         );
-    //     }
-    //
-    //     return (
-    //         <div>
-    //             <Transaction
-    //                 transaction={transactions[this.state.transaction.id]}
-    //                 hash={txHash}
-    //                 drizzle={this.props.drizzle}
-    //                 drizzleState={this.props.drizzleState}
-    //             />
-    //         </div>
-    //     )
-    // }
-
     pushArticle(event) {
         event.preventDefault();
 
@@ -50,7 +29,8 @@ class WriteArticle extends Component {
             {
                 from: drizzleState.accounts[0]
             }
-        );};
+        );
+    };
 
     render() {
         return this.renderPublishArticle();
@@ -59,18 +39,22 @@ class WriteArticle extends Component {
     renderPublishArticle() {
         return (
             <form onSubmit={event => this.pushArticle(event)}>
-                <input
+                <TextField
+                    label="description"
                     onChange={event => this.changeDescription(event.target.value)}
                     value={this.state.article.description}
+
                 />
-                <input
-                    onChange={event => this.changePrice(event.target.value)}
+                <TextField
+                    label="Price"
                     type="number"
+                    onChange={event => this.changePrice(event.target.value)}
                     value={this.state.article.price}
                 />
-                <input
-                    type="submit"
-                />
+
+                <Button type="submit" variant="contained" color="primary">
+                    Add article
+                </Button>
             </form>
         )
     }

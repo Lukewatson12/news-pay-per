@@ -3,8 +3,8 @@ import {DrizzleContext} from "@drizzle/react-plugin";
 import {Drizzle} from "@drizzle/store";
 import drizzleOptions from "./drizzleOptions";
 import "./App.css";
-import News from "./News";
-import Article from "./component/Article/Article";
+import Wrapper from "./container/Wrapper";
+import Container from "@material-ui/core/Container";
 
 const drizzle = new Drizzle(drizzleOptions);
 
@@ -21,10 +21,13 @@ class App extends Component {
                         }
 
                         return (
-                            <div>
-                                <News drizzle={drizzle} drizzleState={drizzleState}/>
-                                {/*<Article id={1} drizzle={drizzle} drizzleState={drizzleState}/>*/}
-                            </div>
+                            <Container>
+                                <Wrapper
+                                    drizzle={drizzle}
+                                    drizzleState={drizzleState}
+                                >
+                                </Wrapper>
+                            </Container>
                         )
                     }}
                 </DrizzleContext.Consumer>
