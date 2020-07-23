@@ -22,8 +22,8 @@ class App extends Component {
 
                         return (
                             <div>
-                                {/*<News drizzle={drizzle} drizzleState={drizzleState}/>*/}
-                                <Article id={1} drizzle={drizzle} drizzleState={drizzleState}/>
+                                <News drizzle={drizzle} drizzleState={drizzleState}/>
+                                {/*<Article id={1} drizzle={drizzle} drizzleState={drizzleState}/>*/}
                             </div>
                         )
                     }}

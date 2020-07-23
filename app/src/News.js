@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import Article from "./component/Article/Article";
+import WriteArticle from "./component/Article/WriteArticle";
 
 class News extends Component {
     props;
@@ -64,52 +66,64 @@ class News extends Component {
         return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
     };
 
-    fetchArticle = (id) => {
-        const {drizzle, drizzleState} = this.props;
-        const contract = drizzle.contracts.NewsPayPer;
-        const state = drizzleState.contracts.NewsPayPer;
-
-        // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
-        if (state.initialized) {
-            const stackId = contract.methods.getArticle.cacheCall(id)
-            const ww = contract.methods.getArticles.cacheCall()
-            const myString = state.getArticle[stackId];
-            console.log(stackId);
-            console.log(state);
-
-            // let newArticles = [
-            //     ...state.articles,
-            //     {}
-            // ];
-            // this.setState({
-            //     newArticles
-            // })
-        }
-
-    };
+    // fetchArticle = (id) => {
+    //     const {drizzle, drizzleState} = this.props;
+    //     const contract = drizzle.contracts.NewsPayPer;
+    //     const state = drizzleState.contracts.NewsPayPer;
+    //
+    //     // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
+    //     if (state.initialized) {
+    //         const stackId = contract.methods.getArticle.cacheCall(id)
+    //         const ww = contract.methods.getArticles.cacheCall()
+    //         const myString = state.getArticle[stackId];
+    //         console.log(stackId);
+    //         console.log(state);
+    //
+    //         // let newArticles = [
+    //         //     ...state.articles,
+    //         //     {}
+    //         // ];
+    //         // this.setState({
+    //         //     newArticles
+    //         // })
+    //     }
+    //
+    // };
 
     render() {
-        const {transactions, transactionStack} = this.props.drizzleState;
         const {drizzleState} = this.props;
 
         const {NewsPayPer} = drizzleState.contracts;
 
-        // using the saved `dataKey`, get the variable we're interested in
-        const balance = NewsPayPer.getBalanceContract[this.state.dataKeys.getBalanceContract];
         const articles = NewsPayPer.getArticles[this.state.dataKeys.getArticles];
-        console.log(articles);
-        if (balance === undefined || articles === undefined) {
+
+        if (articles === undefined || articles.value === undefined) {
             return (
-                <div>No balance</div>
+                <div>
+                    No Articles Found
+                    <WriteArticle
+                        drizzle={this.props.drizzle}
+                        drizzleState={drizzleState}
+                    />
+                </div>
             )
         }
 
         return (
             <div>
-                <input onMouseLeave={this.pushArticle}/>
-                <input onChange={event => this.fetchArticle(event.target.value)}/>
-                <p>{balance.value}</p>
-                <p>{this.getTxStatus()}</p>
+                {articles.value.map(function (object, i) {
+                    return <Article
+                        key={i}
+                        id={i}
+                        drizzle={this.props.drizzle}
+                        drizzleState={drizzleState}
+                    />;
+                }.bind(this))}
+
+                <WriteArticle
+                    drizzle={this.props.drizzle}
+                    drizzleState={drizzleState}
+                />
             </div>
         )
     }
