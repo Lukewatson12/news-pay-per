@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
 
 class WriteArticle extends Component {
 
@@ -39,22 +40,38 @@ class WriteArticle extends Component {
     renderPublishArticle() {
         return (
             <form onSubmit={event => this.pushArticle(event)}>
-                <TextField
-                    label="description"
-                    onChange={event => this.changeDescription(event.target.value)}
-                    value={this.state.article.description}
-
-                />
-                <TextField
-                    label="Price"
-                    type="number"
-                    onChange={event => this.changePrice(event.target.value)}
-                    value={this.state.article.price}
-                />
-
-                <Button type="submit" variant="contained" color="primary">
-                    Add article
-                </Button>
+                <Grid container spacing={2}>
+                    <Grid item lg={12}>
+                        <h3>Write a new article</h3>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <TextField
+                            label="Description"
+                            onChange={event => this.changeDescription(event.target.value)}
+                            value={this.state.article.description}
+                            fullWidth={true}
+                        />
+                    </Grid>
+                    <Grid item lg={12}>
+                        <TextField
+                            label="Price"
+                            type="number"
+                            onChange={event => this.changePrice(event.target.value)}
+                            value={this.state.article.price}
+                            fullWidth={true}
+                        />
+                    </Grid>
+                    <hr/>
+                    <Grid item lg={12}>
+                        <Button
+                            type="submit"
+                            variant="outlined"
+                            color="primary"
+                        >
+                            Add article
+                        </Button>
+                    </Grid>
+                </Grid>
             </form>
         )
     }
