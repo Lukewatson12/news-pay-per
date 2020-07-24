@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Article from "./Article";
 
-class News extends Component {
+class ListArticles extends Component {
     props;
 
     constructor(props) {
@@ -51,6 +51,7 @@ class News extends Component {
 
         return (
             <div>
+                <h1>List of available articles</h1>
                 {articles.value.map(function (object, i) {
                     return <Article
                         key={i}
@@ -64,4 +65,4 @@ class News extends Component {
     }
 }
 
-export default News;
+export default ListArticles;

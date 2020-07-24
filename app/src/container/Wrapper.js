@@ -5,8 +5,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import Drawer from "@material-ui/core/Drawer";
 import WriteArticle from "../component/Article/WriteArticle";
-import News from "../component/Article/News";
+import ListArticles from "../component/Article/ListArticles";
 import Grid from "@material-ui/core/Grid";
+import CreateTwoToneIcon from '@material-ui/icons/CreateTwoTone';
+import ImportContactsTwoToneIcon from '@material-ui/icons/ImportContactsTwoTone';
 
 class Routing extends Component {
 
@@ -27,14 +29,18 @@ class Routing extends Component {
                                 <Link to="/">
                                     <List>
                                         <ListItem button key={"Add article"}>
-                                            <ListItemText primary={"Add article"}/>
+                                            <ListItemText>
+                                                Write article <CreateTwoToneIcon/>
+                                            </ListItemText>
                                         </ListItem>
                                     </List>
                                 </Link>
                                 <Link to="/articles">
                                     <List>
                                         <ListItem button key={"Articles"}>
-                                            <ListItemText primary={"Articles"}/>
+                                            <ListItemText>
+                                                View articles <ImportContactsTwoToneIcon/>
+                                            </ListItemText>
                                         </ListItem>
                                     </List>
                                 </Link>
@@ -46,7 +52,7 @@ class Routing extends Component {
                         <div style={{flex: 1, padding: "10px"}}>
                             <Switch>
                                 <Route
-                                    key={"index"}
+                                    key={"write-article"}
                                     path={"/"}
                                     exact={true}
                                     children={
@@ -57,14 +63,24 @@ class Routing extends Component {
                                     }
                                 />
                                 <Route
-                                    key={"ind2ex"}
+                                    key={"list-articles"}
                                     path={"/articles"}
                                     exact={true}
                                     children={
-                                        <News
+                                        <ListArticles
                                             drizzle={this.props.drizzle}
                                             drizzleState={this.props.drizzleState}
                                         />
+                                    }
+                                />
+                                <Route
+                                    key={"purchase-article"}
+                                    path={"/purchase-article/:article-id"}
+                                    exact={true}
+                                    children={
+                                        <div>
+                                            todo
+                                        </div>
                                     }
                                 />
                             </Switch>
