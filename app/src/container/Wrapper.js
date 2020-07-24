@@ -9,6 +9,7 @@ import ListArticles from "../component/Article/ListArticles";
 import Grid from "@material-ui/core/Grid";
 import CreateTwoToneIcon from '@material-ui/icons/CreateTwoTone';
 import ImportContactsTwoToneIcon from '@material-ui/icons/ImportContactsTwoTone';
+import ArticlePage from "../page/ArticlePage";
 
 class Routing extends Component {
 
@@ -75,12 +76,10 @@ class Routing extends Component {
                                 />
                                 <Route
                                     key={"purchase-article"}
-                                    path={"/purchase-article/:article-id"}
+                                    path="/purchase-article/:articleId"
                                     exact={true}
                                     children={
-                                        <div>
-                                            todo
-                                        </div>
+                                        <ArticlePage/>
                                     }
                                 />
                             </Switch>

@@ -1,12 +1,14 @@
 import React, {Component} from "react";
+import {Drizzle, generateStore} from "@drizzle/store";
 import {DrizzleContext} from "@drizzle/react-plugin";
-import {Drizzle} from "@drizzle/store";
-import drizzleOptions from "./drizzleOptions";
-import "./App.css";
 import Wrapper from "./container/Wrapper";
 import Container from "@material-ui/core/Container";
+import "./App.css";
+import drizzleOptions from "./drizzleOptions";
 
-const drizzle = new Drizzle(drizzleOptions);
+const drizzleStore = generateStore({drizzleOptions});
+
+const drizzle = new Drizzle(drizzleOptions, drizzleStore);
 
 class App extends Component {
     render() {

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
+import {Link} from "react-router-dom";
 
 class Article extends Component {
     constructor(props) {
@@ -46,6 +47,9 @@ class Article extends Component {
             <Paper>
                 <h3>Article id is {this.state.id}</h3>
                 <h3>Article cost is {article.value[1]}</h3>
+                <Link to={"purchase-article/" + this.state.id}>
+                    Read article
+                </Link>
             </Paper>
         )
     }

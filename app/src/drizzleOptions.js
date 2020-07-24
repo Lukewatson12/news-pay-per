@@ -7,9 +7,9 @@ const options = {
     customProvider: new Web3("ws://localhost:8545"),
   },
   contracts: [NewsPayPer],
-  events: {
-    SimpleStorage: ["StorageSet"],
-  },
+  // events: {
+  //   SimpleStorage: ["StorageSet"],
+  // },
 };
 
 export default options;
