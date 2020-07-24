@@ -28,7 +28,8 @@ class WriteArticle extends Component {
             this.state.article.description,
             this.state.article.price,
             {
-                from: drizzleState.accounts[0]
+                from: drizzleState.accounts[0],
+                gas: 300000
             }
         );
     };

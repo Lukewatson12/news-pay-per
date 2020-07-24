@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import Article from "./component/Article/Article";
-import WriteArticle from "./component/Article/WriteArticle";
+import Article from "./Article";
 
 class News extends Component {
     props;
@@ -42,14 +41,10 @@ class News extends Component {
 
         const articles = NewsPayPer.getArticles[this.state.dataKeys.getArticles];
 
-        if (articles === undefined || articles.value === undefined) {
+        if (articles === undefined || articles.value === undefined || articles.value.length === 0) {
             return (
                 <div>
                     No Articles Found
-                    <WriteArticle
-                        drizzle={this.props.drizzle}
-                        drizzleState={drizzleState}
-                    />
                 </div>
             )
         }
@@ -64,11 +59,6 @@ class News extends Component {
                         drizzleState={drizzleState}
                     />;
                 }.bind(this))}
-
-                <WriteArticle
-                    drizzle={this.props.drizzle}
-                    drizzleState={drizzleState}
-                />
             </div>
         )
     }
