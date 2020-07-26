@@ -107,6 +107,33 @@ contract("NewsPayPer", accounts => {
         ));
     });
 
+    it("Should purchase only the selected article", async () => {
+        let articleDescription = "This is my article name";
+
+        await newsPayPerInstance.addArticle(
+            articleDescription,
+            oneEther,
+            {from: alice}
+        );
+
+        await newsPayPerInstance.purchaseArticle(
+            1,
+            {
+                value: oneEther,
+                from: bob
+            }
+        );
+
+        await newsPayPerInstance.hasArticle(
+            2,
+            {from: bob}
+        ).then(hasArticle => assert.equal(
+            false,
+            hasArticle,
+            "Bob has not purchased the article but owns it"
+        ));
+    });
+
     it("Should should not allow you to purchase the same article twice", async () => {
         let articleDescription = "This is my article name";
 
@@ -132,7 +159,7 @@ contract("NewsPayPer", accounts => {
                     from: bob
                 }
             );
-        } catch(exception) {
+        } catch (exception) {
             assert.ok(true)
             return
         }
