@@ -26,6 +26,7 @@ contract NewsPayPer {
     }
 
     function purchaseArticle(uint _id) public payable {
+        //Dont buy if doesnt exist
         Article memory article = articles[_id];
 
         require(articles[_id].readers[msg.sender] == false, "You have already purchased this article");
