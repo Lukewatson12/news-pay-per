@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Article from "./Article";
 
 const ListArticles = (props) => {
@@ -18,7 +18,7 @@ const ListArticles = (props) => {
 
     if (undefined === articles || 0 === articles.value.length) {
         return (
-            <div>s</div>
+            <div>Loading articles...</div>
         )
     }
 
