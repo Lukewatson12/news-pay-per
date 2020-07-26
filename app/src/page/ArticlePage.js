@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
 
-const ArticlePage = (drizzle) => {
+const ArticlePage = (props) => {
     const {articleId} = useParams();
     const [articleKey, setArticleKey] = useState(undefined)
 
-    const contracts = drizzle.drizzle.contracts;
+    const contracts = props.drizzle.contracts;
     const newsPayPerContract = contracts.NewsPayPer;
 
-    const store = drizzle.drizzleState.contracts;
+    const store = props.drizzleState.contracts;
     const article = store.NewsPayPer.getArticle[articleKey];
 
     useEffect(() => {

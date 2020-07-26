@@ -1,59 +1,37 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import {Link} from "react-router-dom";
 
-class Article extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: props.id,
-            dataKeys: {
-                getArticle: null
-            }
-        }
-    }
+const Article = (props) => {
 
-    async componentDidMount() {
-        const {drizzle, drizzleState} = this.props;
-        const state = drizzleState.contracts.NewsPayPer;
+    let {id, drizzle, drizzleState} = props;
+    const [articleKey, setArticleKey] = useState(undefined)
 
-        const contract = drizzle.contracts.NewsPayPer;
+    const newsPayPerContract = drizzle.contracts.NewsPayPer;
+    const store = drizzleState.contracts;
+    const article = store.NewsPayPer.getArticle[articleKey];
 
-        if (state.initialized) {
-            const getArticleKey = await contract.methods["getArticle"].cacheCall(this.state.id);
-            this.setState({
-                "dataKeys": {
-                    "getArticle": getArticleKey
-                }
-            });
-        }
-    }
+    useEffect(() => {
+        let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(id);
+        setArticleKey(articleKey);
+    }, [])
 
-    render() {
-        const {drizzleState} = this.props;
-        const state = drizzleState.contracts.NewsPayPer;
-        const article = state.getArticle[this.state.dataKeys.getArticle];
-
-        if(article === undefined) {
-            return (
-                <h3>
-                    Loading article..
-                </h3>
-            )
-        }
-
+    if (undefined === articleKey || article === undefined) {
         return (
-            <Paper>
-                <h3>Article id is {this.state.id}</h3>
-                <h3>Article cost is {article.value[1]}</h3>
-                <Link to={"articles/" + this.state.id}>
-                    Read article
-                </Link>
-            </Paper>
+            <div>Loading article {id}</div>
         )
     }
 
+    return (
+        <Paper>
+            <h3>Article id is {id}</h3>
+            <h3>Article cost is {article.value[1]}</h3>
+            <Link to={"articles/" + id}>
+                Read article
+            </Link>
+        </Paper>
+    )
 }
 
 Article.propTypes = {
