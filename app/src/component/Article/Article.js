@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import {Link} from "react-router-dom";
