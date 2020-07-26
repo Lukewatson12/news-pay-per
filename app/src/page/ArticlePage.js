@@ -16,7 +16,6 @@ const ArticlePage = (props) => {
         setArticleKey(articleKey);
     }, [])
 
-
     if (undefined === articleKey || article === undefined) {
         return (
             <div>Loading Article {articleId}</div>

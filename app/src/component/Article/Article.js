@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import {Link} from "react-router-dom";
 
 const Article = (props) => {
-
     let {id, drizzle, drizzleState} = props;
     const [articleKey, setArticleKey] = useState(undefined)
 

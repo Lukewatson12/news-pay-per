@@ -1,68 +1,40 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import Article from "./Article";
 
-class ListArticles extends Component {
-    props;
+const ListArticles = (props) => {
+    let {drizzle, drizzleState} = props;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataKeys: {
-                getBalanceContract: null,
-                getArticles: null
-            },
-            articles: []
-        }
-    }
+    const [articlesKey, setArticlesKey] = useState(undefined)
 
-    componentDidMount() {
-        const {drizzle, drizzleState} = this.props;
-        const contract = drizzle.contracts.NewsPayPer;
-        const state = drizzleState.contracts.NewsPayPer;
+    const newsPayPerContract = drizzle.contracts.NewsPayPer;
+    const store = drizzleState.contracts;
+    const articlesStore = store.NewsPayPer;
+    const articles = articlesStore.getArticles[articlesKey];
 
-        if (state.initialized) {
-            const getBalanceContractKey = contract.methods["getBalanceContract"].cacheCall();
-            const getArticlesKey = contract.methods["getArticles"].cacheCall();
+    useEffect(() => {
+        let articleKey = newsPayPerContract.methods["getArticles"].cacheCall();
+        setArticlesKey(articleKey);
+    }, [])
 
-            this.setState({
-                "dataKeys": {
-                    "getBalanceContract": getBalanceContractKey,
-                    "getArticles": getArticlesKey
-                }
-            });
-        }
-
-    }
-
-    render() {
-        const {drizzleState} = this.props;
-
-        const {NewsPayPer} = drizzleState.contracts;
-
-        const articles = NewsPayPer.getArticles[this.state.dataKeys.getArticles];
-
-        if (articles === undefined || articles.value === undefined || articles.value.length === 0) {
-            return (
-                <div>
-                    No Articles Found
-                </div>
-            )
-        }
-
+    if (undefined === articles || 0 === articles.value.length) {
         return (
-            <div>
-                <h1>List of available articles</h1>
-                {articles.value.map(function (object, i) {
-                    return <Article
-                        key={i}
-                        id={i}
-                        drizzle={this.props.drizzle}
-                        drizzleState={drizzleState}
-                    />;
-                }.bind(this))}
-            </div>
+            <div>s</div>
         )
     }
+
+    return (
+        <div>
+            <h1>List of available articles</h1>
+            {articles.value.map(function (object, i) {
+                return <Article
+                    key={i}
+                    id={i}
+                    drizzle={drizzle}
+                    drizzleState={drizzleState}
+                />;
+            }.bind(this))}
+        </div>
+    )
 }
 
 export default ListArticles;
