@@ -47,7 +47,7 @@ class Article extends Component {
             <Paper>
                 <h3>Article id is {this.state.id}</h3>
                 <h3>Article cost is {article.value[1]}</h3>
-                <Link to={"purchase-article/" + this.state.id}>
+                <Link to={"articles/" + this.state.id}>
                     Read article
                 </Link>
             </Paper>

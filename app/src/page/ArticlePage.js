@@ -1,21 +1,34 @@
-import React, {Component} from "react";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 
-class ArticlePage extends Component {
-    constructor(props) {
-        super(props);
-        // this.drizzleState = context.drizzle;
-        console.log(props);
-        // this.contractInstance = context.drizzle.contracts.NewsPayPer;
 
-    }
+const ArticlePage = (drizzle) => {
+    const {articleId} = useParams();
+    const [articleKey, setArticleKey] = useState(undefined)
 
-    render() {
+    const contracts = drizzle.drizzle.contracts;
+    const newsPayPerContract = contracts.NewsPayPer;
+
+    const store = drizzle.drizzleState.contracts;
+    const article = store.NewsPayPer.getArticle[articleKey];
+
+    useEffect(() => {
+        let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(articleId);
+        setArticleKey(articleKey);
+    }, [])
+
+
+    if (undefined === articleKey || article === undefined) {
         return (
-
-            <div>hello</div>
+            <div>Loading Article {articleId}</div>
         )
     }
 
+    return (
+        <div>
+            <p>Article cost is {article.value[1]}</p>
+        </div>
+    )
 }
 
 export default ArticlePage;

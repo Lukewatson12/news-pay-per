@@ -64,6 +64,17 @@ class Routing extends Component {
                                     }
                                 />
                                 <Route
+                                    key={"article"}
+                                    path="/articles/:articleId"
+                                    exact={true}
+                                    children={
+                                        <ArticlePage
+                                            drizzle={this.props.drizzle}
+                                            drizzleState={this.props.drizzleState}
+                                        />
+                                    }
+                                />
+                                <Route
                                     key={"list-articles"}
                                     path={"/articles"}
                                     exact={true}
@@ -72,14 +83,6 @@ class Routing extends Component {
                                             drizzle={this.props.drizzle}
                                             drizzleState={this.props.drizzleState}
                                         />
-                                    }
-                                />
-                                <Route
-                                    key={"purchase-article"}
-                                    path="/purchase-article/:articleId"
-                                    exact={true}
-                                    children={
-                                        <ArticlePage/>
                                     }
                                 />
                             </Switch>
