@@ -16,9 +16,17 @@ const ListArticles = (props) => {
         setArticlesKey(articleKey);
     }, [])
 
-    if (undefined === articles || 0 === articles.value.length) {
+    if (undefined === articles) {
         return (
             <div>Loading articles...</div>
+        )
+    }
+
+    if (0 === articles.value.length) {
+        return (
+            <div>
+                No articles written
+            </div>
         )
     }
 
