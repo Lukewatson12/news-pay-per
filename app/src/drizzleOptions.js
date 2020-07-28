@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import NewsPayPer from "./contracts/NewsPayPer.json";
+import NewsPayPer from "../../build/contracts/NewsPayPer.json";
 
 const options = {
   web3: {
@@ -7,9 +7,6 @@ const options = {
     customProvider: new Web3("ws://localhost:8545"),
   },
   contracts: [NewsPayPer],
-  // events: {
-  //   SimpleStorage: ["StorageSet"],
-  // },
 };
 
 export default options;
