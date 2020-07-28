@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from "react";
+import {useSelector} from 'react-redux'
 import {useParams} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import {getArticle} from "../redux/actions";
 
 const ArticlePage = (props) => {
     const {articleId} = useParams();
@@ -13,6 +15,8 @@ const ArticlePage = (props) => {
     const store = drizzleState.contracts;
     const article = store.NewsPayPer.getArticle[articleKey];
     const hasArticle = store.NewsPayPer.hasArticle[hasArticleKey];
+
+    //useSelector(state => console.log(state.articles[articleId]))
 
     useEffect(() => {
         let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(articleId);
