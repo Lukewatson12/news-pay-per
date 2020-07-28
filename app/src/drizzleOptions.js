@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import NewsPayPer from "../../build/contracts/NewsPayPer.json";
+import NewsPayPer from "./contracts/NewsPayPer.json";
 
 const options = {
   web3: {

@@ -1,19 +1,26 @@
 const Web3 = require("web3");
 const NewsPayPer = require("../../build/contracts/NewsPayPer.json")
+const web3 = new Web3(
+    new Web3.providers.HttpProvider("http://localhost:8545")
+);
 
 const express = require('express');
 const router = express.Router();
 
-let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-
-/* GET users listing. */
 router.get('/', function (req, res, next) {
-    // let contract = new AbiItem();
+    const coursesContract = new web3.eth.Contract(NewsPayPer.abi, "0xCF2b4642b9601c77B7C83a7BC73670d36d97D394");
 
-    let CoursesContract = new web3.eth.Contract(NewsPayPer.abi);
-console.log(CoursesContract)
-
-    res.send('respond with a resource');
+    web3.eth.getAccounts()
+        .then(accounts => accounts[0])
+        .then(
+            defaultAccount =>
+                coursesContract.methods.hasArticle(1).call({
+                    "from": defaultAccount
+                })
+        )
+        .then(
+            hasArticle => res.send(hasArticle)
+        )
 });
 
 module.exports = router;
