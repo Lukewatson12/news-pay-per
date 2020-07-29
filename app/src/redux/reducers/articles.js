@@ -1,34 +1,33 @@
-import {
-    GET_ARTICLE
-} from "../actionTypes";
+import {GET_ARTICLE_SUCCESS} from "../actionTypes";
 
 const initialState = [
     {
-        "content": "test"
+        "description": "test"
     },
     {
-        "content": "test"
+        "description": "test"
     },
     {
-        "content": "test"
+        "description": "test"
     },
     {
-        "content": "test"
+        "description": "test"
     },
 ];
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case GET_ARTICLE: {
-            const {id} = action.payload;
+        case GET_ARTICLE_SUCCESS: {
+            const {id, article} = action.payload;
 
-            let articles = state.articles;
-            articles.splice(id, id, "test");
-            console.log(articles);
-            let newState = {...state};
-            newState.articles = articles;
+            let newState = [...state];
 
-            return newState;
+            newState.splice(
+                id,
+                1,
+                article
+            );
+            return newState
         }
         default:
             return state;

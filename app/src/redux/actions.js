@@ -1,10 +1,11 @@
 import {
-    GET_ARTICLE
+    GET_ARTICLE_SUCCESS
 } from "./actionTypes";
 
-export const getArticle = (id) => ({
-    type: GET_ARTICLE,
+export const getArticle = (id, article) => ({
+    type: GET_ARTICLE_SUCCESS,
     payload: {
+        article: article,
         id: id
     }
 });
