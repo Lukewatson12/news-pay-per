@@ -61,7 +61,6 @@ const ArticlePage = (props) => {
         );
     }, [newsPayPerContract, drizzleState, articleId]);
 
-    // console.log(article)
     if (undefined === articleKey || undefined === articleOnChain || undefined === hasArticle || undefined === article) {
         return (
             <div>Loading Article {articleId}</div>
