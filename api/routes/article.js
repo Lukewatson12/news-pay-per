@@ -7,7 +7,8 @@ const web3 = new Web3(
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
+    const id = req.params.id;
     const coursesContract = new web3.eth.Contract(NewsPayPer.abi, "0xCF2b4642b9601c77B7C83a7BC73670d36d97D394");
 
     getHasArticle()
@@ -16,7 +17,6 @@ router.get('/', function (req, res, next) {
         }))
 
     function getArticleContent(hasArticle) {
-        console.log(hasArticle)
         if (hasArticle) {
             return (
                 "            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed consectetur erat, id cursus eros.\n" +
@@ -47,7 +47,7 @@ router.get('/', function (req, res, next) {
             .then(accounts => accounts[0])
             .then(
                 defaultAccount =>
-                    coursesContract.methods.hasArticle(3).call({
+                    coursesContract.methods.hasArticle(id).call({
                         "from": defaultAccount
                     })
             )

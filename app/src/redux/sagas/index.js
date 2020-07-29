@@ -26,7 +26,7 @@ function* fetchArticle(action) {
 
 async function fetchArticleHttp(id) {
     try {
-        return await axios.get('http://localhost:8080/article').then(response => {
+        return await axios.get('http://localhost:8080/article/' + id).then(response => {
             return response.data
         })
     } catch (e) {
