@@ -1,22 +1,19 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {useSelector} from 'react-redux'
+import {useSelector, shallowEqual} from 'react-redux'
 import {useParams} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import {getArticle} from "../redux/actions";
 
 const ArticlePage = (props) => {
+    console.log("rerender");
     const {articleId} = useParams();
-    let {drizzle, drizzleState} = props;
-
+    const {drizzle, drizzleState} = props;
     const [articleKey, setArticleKey] = useState(undefined)
     const [hasArticleKey, setHasArticleKey] = useState(false)
-
     const newsPayPerContract = drizzle.contracts.NewsPayPer;
     const store = drizzleState.contracts;
-    const article = store.NewsPayPer.getArticle[articleKey];
+    const articleOnChain = store.NewsPayPer.getArticle[articleKey];
     const hasArticle = store.NewsPayPer.hasArticle[hasArticleKey];
-
-    //useSelector(state => console.log(state.articles[articleId]))
 
     useEffect(() => {
         let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(articleId);
@@ -43,8 +40,9 @@ const ArticlePage = (props) => {
         );
     }, [newsPayPerContract, drizzleState, articleId]);
 
+    const article = useSelector(({articles}) => articles[articleId], shallowEqual)
 
-    if (undefined === articleKey || undefined === article || undefined === hasArticle) {
+    if (undefined === articleKey || undefined === articleOnChain || undefined === hasArticle) {
         return (
             <div>Loading Article {articleId}</div>
         )
@@ -53,12 +51,12 @@ const ArticlePage = (props) => {
     if (false === hasArticle.value) {
         return (
             <div>
-                <p>Article cost is {article.value[1]}
+                <p>Article cost is {articleOnChain.value[1]}
                     <Button
                         variant="contained"
                         color="primary"
                         type={"submit"}
-                        onClick={() => purchaseArticle(article)}
+                        onClick={() => purchaseArticle(articleOnChain)}
                     >
                         Primary
                     </Button>
@@ -70,23 +68,7 @@ const ArticlePage = (props) => {
     return (
         <div>
             <h1>Article title</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed consectetur erat, id cursus eros.
-                Morbi ac tortor est. Nullam sit amet ex et ipsum sollicitudin molestie in sed ante. Fusce ac quam risus.
-                Phasellus volutpat lectus velit, at malesuada augue imperdiet sit amet. Interdum et malesuada fames ac
-                ante ipsum primis in faucibus. Mauris ut diam sit amet odio tincidunt maximus. Integer in nisi a lectus
-                rhoncus commodo. Vestibulum sed mauris eu nulla scelerisque molestie. Phasellus efficitur, ligula
-                gravida imperdiet faucibus, elit massa interdum tortor, non sodales tellus mi et tellus. Nulla dapibus
-                rhoncus odio, vel fermentum purus mollis vel. Mauris viverra porttitor condimentum. Praesent
-                pellentesque dui dolor, at pharetra metus tempor nec.
-            </p>
-            <p> Aliquam erat volutpat. Phasellus venenatis molestie erat, ut feugiat nunc tincidunt vel. Suspendisse ut
-                euismod leo. Nam nec condimentum libero, sit amet consectetur risus. Maecenas ac enim rhoncus, maximus
-                tortor id, rutrum neque. Nulla facilisi. Aliquam porttitor ex dolor, a elementum nibh lacinia ut. Duis
-                luctus, velit non gravida convallis, leo massa luctus urna, nec posuere nisl nisl ac erat. In placerat
-                convallis leo, eget cursus diam elementum at. Quisque mauris sapien, feugiat non lorem vel, bibendum
-                malesuada dolor. Nullam rhoncus purus vel ante dapibus, id gravida dolor dignissim. Etiam laoreet sed
-                ipsum a egestas.
-            </p>
+            {article.content}
         </div>
     )
 }
