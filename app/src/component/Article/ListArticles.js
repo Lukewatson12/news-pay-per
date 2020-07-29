@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Article from "./Article";
+import ArticlePreview from "./ArticlePreview";
 
 const ListArticles = (props) => {
     let {drizzle, drizzleState} = props;
@@ -34,7 +34,7 @@ const ListArticles = (props) => {
         <div>
             <h1>List of available articles</h1>
             {articles.value.map(function (object, i) {
-                return <Article
+                return <ArticlePreview
                     key={i}
                     id={i}
                     drizzle={drizzle}

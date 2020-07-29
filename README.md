@@ -45,4 +45,4 @@ And start with `yarn start`
 - Add persistence to backend so articles can be saved
 - Simplify smart contract logic and remove expensive data storage
 - Fix issues with frontend rendering and add test cases
- 
+- Don't pass drizzle & drizzle store around the app

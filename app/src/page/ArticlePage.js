@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {useSelector, shallowEqual, useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {useParams} from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import {getArticle} from "../redux/actions";
 import {GET_ARTICLE_REQUEST} from "../redux/actionTypes";
+import ArticleDisplay from "../component/Article/ArticleDisplay";
+import PurchaseArticle from "../component/Article/PurchaseArticle";
 
 const ArticlePage = (props) => {
     // far too many rerenders here
@@ -31,15 +32,10 @@ const ArticlePage = (props) => {
 
     getArticle()
 
-    const article = useSelector(
-        (state) => state.articles[articleId],
-        shallowEqual
-    )
-
     useEffect(() => {
         let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(articleId);
         setArticleKey(articleKey);
-    }, [articleId, newsPayPerContract])
+    }, [articleId, newsPayPerContract.methods["getArticle"]])
 
     useEffect(() => {
         let hasArticleKey = newsPayPerContract.methods["hasArticle"].cacheCall(
@@ -49,19 +45,9 @@ const ArticlePage = (props) => {
             }
         );
         setHasArticleKey(hasArticleKey);
-    }, [articleId, newsPayPerContract, drizzleState])
+    }, [articleId, newsPayPerContract.methods["hasArticle"], drizzleState.accounts[0]])
 
-    const purchaseArticle = useCallback((article) => {
-        newsPayPerContract.methods["purchaseArticle"].cacheSend(
-            articleId,
-            {
-                "from": drizzleState.accounts[0],
-                "value": article.value[1]
-            }
-        );
-    }, [newsPayPerContract, drizzleState, articleId]);
-
-    if (undefined === articleKey || undefined === articleOnChain || undefined === hasArticle || undefined === article) {
+    if (undefined === articleKey || undefined === articleOnChain || undefined === hasArticle) {
         return (
             <div>Loading Article {articleId}</div>
         )
@@ -69,26 +55,19 @@ const ArticlePage = (props) => {
 
     if (false === hasArticle.value) {
         return (
-            <div>
-                <p>Article cost is {articleOnChain.value[1]}
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type={"submit"}
-                        onClick={() => purchaseArticle(articleOnChain)}
-                    >
-                        Primary
-                    </Button>
-                </p>
-            </div>
+            <PurchaseArticle
+                id={articleId}
+                drizzle={drizzle}
+                drizzleState={drizzleState}
+                article={articleOnChain}
+            />
         )
     }
 
     return (
-        <div>
-            <h1>Article title</h1>
-            {article.description}
-        </div>
+        <ArticleDisplay
+            id={articleId}
+        />
     )
 }
 

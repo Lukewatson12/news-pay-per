@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 
-const Article = (props) => {
+const ArticlePreview = (props) => {
     let {id, drizzle, drizzleState} = props;
     const [articleKey, setArticleKey] = useState(undefined)
     const classes = useStyles();
@@ -45,12 +45,12 @@ const Article = (props) => {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    title="Article title"
+                    title="ArticlePreview title"
                     image={"https://www.blockassets.io/wp-content/uploads/2017/03/Background-1356x430.jpg"}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        Article title
+                        ArticlePreview title
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         In tristique bibendum quam vitae hendrerit. Pellentesque lacus est, placerat aliquet interdum
@@ -69,8 +69,8 @@ const Article = (props) => {
     )
 }
 
-Article.propTypes = {
+ArticlePreview.propTypes = {
     id: PropTypes.number.isRequired
 };
 
-export default Article;
+export default ArticlePreview;
