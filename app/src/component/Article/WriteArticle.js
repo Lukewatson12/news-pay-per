@@ -1,93 +1,72 @@
-import React, {Component} from "react";
+import React, {useCallback, useState} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 
-class WriteArticle extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            article: {
-                "description": "asdas",
-                "price": 2
-            }
-        }
+const WriteArticle = () => {
+    const {useCacheSend} = drizzleReactHooks.useDrizzle()
 
-        this.changeDescription = this.changeDescription.bind(this);
-        this.changePrice = this.changePrice.bind(this);
+    const {defaultAccount} = drizzleReactHooks.useDrizzleState(drizzleState => ({
+        defaultAccount: drizzleState.accounts[0]
+    }))
+
+    const [description, setDescription] = useState("asdas");
+    const [price, setPrice] = useState(0);
+
+    const {send} = useCacheSend(
+        'NewsPayPer',
+        'addArticle'
+    );
+
+    const payload = {
+        "from": defaultAccount,
+        "gas": 300000
     }
 
-    pushArticle(event) {
-        event.preventDefault();
-
-        const {drizzle, drizzleState} = this.props;
-        const contract = drizzle.contracts.NewsPayPer;
-
-        contract.methods["addArticle"].cacheSend(
-            this.state.article.description,
-            this.state.article.price,
-            {
-                from: drizzleState.accounts[0],
-                gas: 300000
-            }
-        );
-    };
-
-    render() {
-        return this.renderPublishArticle();
-    }
-
-    renderPublishArticle() {
-        return (
-            <form onSubmit={event => this.pushArticle(event)}>
-                <Grid container spacing={2}>
-                    <Grid item lg={12}>
-                        <h3>Write a new article</h3>
-                    </Grid>
-                    <Grid item lg={12}>
-                        <TextField
-                            label="Description"
-                            onChange={event => this.changeDescription(event.target.value)}
-                            value={this.state.article.description}
-                            fullWidth={true}
-                        />
-                    </Grid>
-                    <Grid item lg={12}>
-                        <TextField
-                            label="Price"
-                            type="number"
-                            onChange={event => this.changePrice(event.target.value)}
-                            value={this.state.article.price}
-                            fullWidth={true}
-                        />
-                    </Grid>
-                    <hr/>
-                    <Grid item lg={12}>
-                        <Button
-                            type="submit"
-                            variant="outlined"
-                            color="primary"
-                        >
-                            Add article
-                        </Button>
-                    </Grid>
+    return (
+        <form onSubmit={(event => event.preventDefault())}>
+            <Grid container spacing={2}>
+                <Grid item lg={12}>
+                    <h3>Write a new article</h3>
                 </Grid>
-            </form>
-        )
-    }
-
-    changeDescription(description) {
-        let article = {...this.state.article}
-        article.description = description;
-        this.setState({article})
-    }
-
-    changePrice(price) {
-        let article = {...this.state.article}
-        article.price = price;
-        this.setState({article})
-    }
+                <Grid item lg={12}>
+                    <TextField
+                        label="Description"
+                        onChange={event => setDescription(event.target.value)}
+                        value={description}
+                        fullWidth={true}
+                    />
+                </Grid>
+                <Grid item lg={12}>
+                    <TextField
+                        label="Price"
+                        type="number"
+                        onChange={event => setPrice(event.target.value)}
+                        value={price}
+                        fullWidth={true}
+                    />
+                </Grid>
+                <hr/>
+                <Grid item lg={12}>
+                    <Button
+                        type="submit"
+                        variant="outlined"
+                        color="primary"
+                        onClick={
+                            useCallback(
+                                () => send(description, price, payload),
+                                [description, price, payload]
+                            )
+                        }
+                    >
+                        Add article
+                    </Button>
+                </Grid>
+            </Grid>
+        </form>
+    )
 }
 
 export default WriteArticle;
