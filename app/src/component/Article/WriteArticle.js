@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import {drizzleReactHooks} from "@drizzle/react-plugin";
 
-
 const WriteArticle = () => {
     const {useCacheSend} = drizzleReactHooks.useDrizzle()
 

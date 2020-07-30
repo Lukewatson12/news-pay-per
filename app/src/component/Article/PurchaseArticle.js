@@ -30,7 +30,7 @@ const PurchaseArticle = (props) => {
                     color="primary"
                     type={"submit"}
                     onClick={
-                        useCallback(() => send(id, payload), [])
+                        useCallback(() => send(id, payload), [id, payload])
                     }
                 >
                     Primary
