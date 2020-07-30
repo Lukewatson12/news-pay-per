@@ -1,28 +1,40 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import Button from "@material-ui/core/Button";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 
 const PurchaseArticle = (props) => {
-    const {drizzle, drizzleState, id, article} = props;
-    const newsPayPerContract = drizzle.contracts.NewsPayPer;
+    const {id, articleOnChain} = props;
+    const {
+        useCacheSend
+    } = drizzleReactHooks.useDrizzle()
 
-    const purchaseArticle = useCallback((article) => {
-        newsPayPerContract.methods["purchaseArticle"].cacheSend(
-            id,
-            {
-                "from": drizzleState.accounts[0],
-                "value": article.value[1]
-            }
-        );
-    }, [newsPayPerContract, drizzleState, id]);
+    const {defaultAccount} = drizzleReactHooks.useDrizzleState(drizzleState => ({
+        defaultAccount: drizzleState.accounts[0]
+    }))
+
+    const {send, TXObjects} = useCacheSend(
+        'NewsPayPer',
+        'purchaseArticle',
+        [id]
+    );
+
+    const articleCost = articleOnChain[1];
+
+    const payload = {
+        "from": defaultAccount,
+        "value": articleCost
+    }
 
     return (
         <div>
-            <p>Article cost is {article.value[1]}
+            <p>Article cost is {articleCost}
                 <Button
                     variant="contained"
                     color="primary"
                     type={"submit"}
-                    onClick={() => purchaseArticle(article)}
+                    onClick={
+                        useCallback(() => send(id, payload), [])
+                    }
                 >
                     Primary
                 </Button>

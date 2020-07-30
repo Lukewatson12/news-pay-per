@@ -12,10 +12,10 @@ const ArticlePage = () => {
 
     const {id} = useParams();
     const dispatch = useDispatch()
-
     const {useCacheCall} = drizzleReactHooks.useDrizzle()
-    const hasArticle = useCacheCall('NewsPayPer', 'hasArticle', [id]);
+
     const articleOnChain = useCacheCall('NewsPayPer', 'getArticle', [id]);
+    const hasArticle = useCacheCall('NewsPayPer', 'hasArticle', [id]);
 
     const fetchArticle = useCallback(
         () => dispatch({
@@ -32,17 +32,17 @@ const ArticlePage = () => {
         shallowEqual
     );
 
-    if (undefined === hasArticle) {
+    if (undefined === hasArticle || undefined === articleOnChain) {
         return (
             <div>Loading Article {id}</div>
         )
     }
 
-    if (false === hasArticle.value) {
+    if (false === hasArticle) {
         return (
             <PurchaseArticle
                 id={id}
-                article={articleOnChain}
+                articleOnChain={articleOnChain}
             />
         )
     }
