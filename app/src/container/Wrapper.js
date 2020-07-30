@@ -11,87 +11,72 @@ import CreateTwoToneIcon from '@material-ui/icons/CreateTwoTone';
 import ImportContactsTwoToneIcon from '@material-ui/icons/ImportContactsTwoTone';
 import ArticlePage from "../page/ArticlePage";
 
-class Routing extends Component {
+const Wrapper = (props) => {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <Router>
-                <Grid container spacing={2}>
-                    <Grid item lg={1}>
-                        <div>
-                            <Drawer
-                                variant="permanent"
-                                anchor="left"
-                            >
-                                <Link to="/">
-                                    <List>
-                                        <ListItem button key={"Add article"}>
-                                            <ListItemText>
-                                                Write article <CreateTwoToneIcon/>
-                                            </ListItemText>
-                                        </ListItem>
-                                    </List>
-                                </Link>
-                                <Link to="/articles">
-                                    <List>
-                                        <ListItem button key={"Articles"}>
-                                            <ListItemText>
-                                                View articles <ImportContactsTwoToneIcon/>
-                                            </ListItemText>
-                                        </ListItem>
-                                    </List>
-                                </Link>
-                            </Drawer>
-                        </div>
-                    </Grid>
-
-                    <Grid item lg={11}>
-                        <div style={{flex: 1, padding: "10px"}}>
-                            <Switch>
-                                <Route
-                                    key={"write-article"}
-                                    path={"/"}
-                                    exact={true}
-                                    children={
-                                        <WriteArticle
-                                            drizzle={this.props.drizzle}
-                                            drizzleState={this.props.drizzleState}
-                                        />
-                                    }
-                                />
-                                <Route
-                                    key={"article"}
-                                    path="/articles/:articleId"
-                                    exact={true}
-                                    children={
-                                        <ArticlePage
-                                            drizzle={this.props.drizzle}
-                                            drizzleState={this.props.drizzleState}
-                                        />
-                                    }
-                                />
-                                <Route
-                                    key={"list-articles"}
-                                    path={"/articles"}
-                                    exact={true}
-                                    children={
-                                        <ListArticles
-                                            drizzle={this.props.drizzle}
-                                            drizzleState={this.props.drizzleState}
-                                        />
-                                    }
-                                />
-                            </Switch>
-                        </div>
-                    </Grid>
+    return (
+        <Router>
+            <Grid container spacing={2}>
+                <Grid item lg={1}>
+                    <div>
+                        <Drawer
+                            variant="permanent"
+                            anchor="left"
+                        >
+                            <Link to="/">
+                                <List>
+                                    <ListItem button key={"Add article"}>
+                                        <ListItemText>
+                                            Write article <CreateTwoToneIcon/>
+                                        </ListItemText>
+                                    </ListItem>
+                                </List>
+                            </Link>
+                            <Link to="/articles">
+                                <List>
+                                    <ListItem button key={"Articles"}>
+                                        <ListItemText>
+                                            View articles <ImportContactsTwoToneIcon/>
+                                        </ListItemText>
+                                    </ListItem>
+                                </List>
+                            </Link>
+                        </Drawer>
+                    </div>
                 </Grid>
-            </Router>
-        )
-    }
+
+                <Grid item lg={11}>
+                    <div style={{flex: 1, padding: "10px"}}>
+                        <Switch>
+                            <Route
+                                key={"write-article"}
+                                path={"/"}
+                                exact={true}
+                                children={
+                                    <WriteArticle/>
+                                }
+                            />
+                            <Route
+                                key={"article"}
+                                path="/articles/:id"
+                                exact={true}
+                                children={
+                                    <ArticlePage/>
+                                }
+                            />
+                            <Route
+                                key={"list-articles"}
+                                path={"/articles"}
+                                exact={true}
+                                children={
+                                    <ListArticles/>
+                                }
+                            />
+                        </Switch>
+                    </div>
+                </Grid>
+            </Grid>
+        </Router>
+    )
 }
 
-export default Routing;
+export default Wrapper;

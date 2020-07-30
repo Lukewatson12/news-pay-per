@@ -9,6 +9,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 
 const useStyles = makeStyles({
     media: {
@@ -21,20 +22,14 @@ const useStyles = makeStyles({
 
 
 const ArticlePreview = (props) => {
-    let {id, drizzle, drizzleState} = props;
-    const [articleKey, setArticleKey] = useState(undefined)
+    let {id} = props;
     const classes = useStyles();
 
-    const newsPayPerContract = drizzle.contracts.NewsPayPer;
-    const store = drizzleState.contracts;
-    const article = store.NewsPayPer.getArticle[articleKey];
+    const {useCacheCall} = drizzleReactHooks.useDrizzle()
 
-    useEffect(() => {
-        let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(id);
-        setArticleKey(articleKey);
-    }, [])
+    const article = useCacheCall('NewsPayPer', 'getArticle', [id]);
 
-    if (undefined === articleKey || article === undefined) {
+    if (undefined === article) {
         return (
             <div>Loading article {id}</div>
         )

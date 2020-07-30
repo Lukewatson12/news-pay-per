@@ -1,20 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
+import {drizzleReactHooks} from '@drizzle/react-plugin'
 import ArticlePreview from "./ArticlePreview";
 
-const ListArticles = (props) => {
-    let {drizzle, drizzleState} = props;
+const ListArticles = () => {
+    const {useCacheCall} = drizzleReactHooks.useDrizzle()
 
-    const [articlesKey, setArticlesKey] = useState(undefined)
-
-    const newsPayPerContract = drizzle.contracts.NewsPayPer;
-    const store = drizzleState.contracts;
-    const articlesStore = store.NewsPayPer;
-    const articles = articlesStore.getArticles[articlesKey];
-
-    useEffect(() => {
-        let articleKey = newsPayPerContract.methods["getArticles"].cacheCall();
-        setArticlesKey(articleKey);
-    }, [])
+    // todo Maybe more efficient to pull this from the store if it is available
+    const articles = useCacheCall('NewsPayPer', 'getArticles');
 
     if (undefined === articles) {
         return (
@@ -22,7 +14,7 @@ const ListArticles = (props) => {
         )
     }
 
-    if (0 === articles.value.length) {
+    if (0 === articles.length) {
         return (
             <div>
                 No articles written
@@ -33,12 +25,10 @@ const ListArticles = (props) => {
     return (
         <div>
             <h1>List of available articles</h1>
-            {articles.value.map(function (object, i) {
+            {articles.map(function (object, i) {
                 return <ArticlePreview
                     key={i}
                     id={i}
-                    drizzle={drizzle}
-                    drizzleState={drizzleState}
                 />;
             }.bind(this))}
         </div>

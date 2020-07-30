@@ -1,13 +1,7 @@
 import React from "react";
-import {shallowEqual, useSelector} from 'react-redux'
 
 const ArticleDisplay = (props) => {
-    const {id} = props;
-
-    const article = useSelector(
-        (state) => state.articles[id],
-        shallowEqual
-    );
+    const {article} = props;
 
     if (article) {
         return (

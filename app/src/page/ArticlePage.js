@@ -1,72 +1,57 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {useDispatch} from 'react-redux'
+import React, {useCallback} from "react";
 import {useParams} from "react-router-dom";
-import {getArticle} from "../redux/actions";
-import {GET_ARTICLE_REQUEST} from "../redux/actionTypes";
-import ArticleDisplay from "../component/Article/ArticleDisplay";
+import {drizzleReactHooks} from "@drizzle/react-plugin";
 import PurchaseArticle from "../component/Article/PurchaseArticle";
+import ArticleDisplay from "../component/Article/ArticleDisplay";
+import {GET_ARTICLE_REQUEST} from "../redux/actionTypes";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 
-const ArticlePage = (props) => {
+const ArticlePage = () => {
     // far too many rerenders here
     console.log("rerender");
-    const {articleId} = useParams();
-    const {drizzle, drizzleState} = props;
-    const [articleKey, setArticleKey] = useState(undefined)
-    const [hasArticleKey, setHasArticleKey] = useState(false)
-    const newsPayPerContract = drizzle.contracts.NewsPayPer;
-    const store = drizzleState.contracts;
+
+    const {id} = useParams();
     const dispatch = useDispatch()
+    const {useCacheCall} = drizzleReactHooks.useDrizzle()
 
-    const articleOnChain = store.NewsPayPer.getArticle[articleKey];
-    const hasArticle = store.NewsPayPer.hasArticle[hasArticleKey];
+    const articleOnChain = useCacheCall('NewsPayPer', 'getArticle', [id]);
+    const hasArticle = useCacheCall('NewsPayPer', 'hasArticle', [id]);
 
-    const getArticle = useCallback(
+    const fetchArticle = useCallback(
         () => dispatch({
             type: GET_ARTICLE_REQUEST,
             payload: {
-                "id": articleId
+                "id": id
             },
         }),
         [dispatch]
     )
 
-    getArticle()
+    const article = useSelector(
+        (state) => state.articles[id],
+        shallowEqual
+    );
 
-    useEffect(() => {
-        let articleKey = newsPayPerContract.methods["getArticle"].cacheCall(articleId);
-        setArticleKey(articleKey);
-    }, [articleId, newsPayPerContract.methods["getArticle"]])
-
-    useEffect(() => {
-        let hasArticleKey = newsPayPerContract.methods["hasArticle"].cacheCall(
-            articleId,
-            {
-                "from": drizzleState.accounts[0]
-            }
-        );
-        setHasArticleKey(hasArticleKey);
-    }, [articleId, newsPayPerContract.methods["hasArticle"], drizzleState.accounts[0]])
-
-    if (undefined === articleKey || undefined === articleOnChain || undefined === hasArticle) {
+    if (undefined === hasArticle || undefined === articleOnChain) {
         return (
-            <div>Loading Article {articleId}</div>
+            <div>Loading Article {id}</div>
         )
     }
 
-    if (false === hasArticle.value) {
+    if (false === hasArticle) {
         return (
             <PurchaseArticle
-                id={articleId}
-                drizzle={drizzle}
-                drizzleState={drizzleState}
-                article={articleOnChain}
+                id={id}
+                articleOnChain={articleOnChain}
             />
         )
     }
 
+    fetchArticle();
+
     return (
         <ArticleDisplay
-            id={articleId}
+            article={article}
         />
     )
 }
