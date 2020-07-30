@@ -27,7 +27,7 @@ Running the backend application is simple. The application is stored under `./ap
 
 `cd ./api`
 
-To build `docker build -t luke.watson/node-web-app .`
+To build `make start_api`
 
 To run `docker run -p 8080:8080 -d luke.watson/node-web-app`
 

@@ -1,5 +1,5 @@
 const Web3 = require("web3");
-const NewsPayPer = require("../../build/contracts/NewsPayPer.json")
+const NewsPayPer = require("../contracts/NewsPayPer.json")
 const web3 = new Web3(
     new Web3.providers.HttpProvider("http://localhost:8545")
 );
@@ -50,7 +50,9 @@ router.get('/:id', function (req, res, next) {
                     coursesContract.methods.hasArticle(id).call({
                         "from": defaultAccount
                     })
-            )
+            ).catch((error) => {
+                console.log(error)
+            })
     }
 
 });
