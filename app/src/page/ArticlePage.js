@@ -7,9 +7,6 @@ import {GET_ARTICLE_REQUEST} from "../redux/actionTypes";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 
 const ArticlePage = () => {
-    // far too many rerenders here
-    console.log("rerender");
-
     const {id} = useParams();
     const dispatch = useDispatch()
     const {useCacheCall} = drizzleReactHooks.useDrizzle()

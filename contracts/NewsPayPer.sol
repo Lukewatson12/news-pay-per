@@ -13,14 +13,13 @@ contract NewsPayPer {
     uint public totalArticles;
 
     function addArticle(string memory description, uint price) public {
-        // shouldnt increment before insertion
-        uint articleId = totalArticles +=1;
-
         Article memory article = Article(
             price,
             description,
-            articleId
+            totalArticles
         );
+
+        uint articleId = totalArticles += 1;
 
         articles[articleId] = article;
     }
@@ -34,20 +33,20 @@ contract NewsPayPer {
 
         articles[_id].readers[msg.sender] = true;
 
-        if(msg.value > article.price) {
+        if (msg.value > article.price) {
             msg.sender.transfer(msg.value - article.price);
         }
     }
 
-    function getBalanceContract() public view returns(uint){
+    function getBalanceContract() public view returns (uint){
         return address(this).balance;
     }
 
-    function hasArticle(uint _id) public view returns(bool) {
+    function hasArticle(uint _id) public view returns (bool) {
         return articles[_id].readers[msg.sender];
     }
 
-    function getArticle(uint _id) public view returns(string memory, uint) {
+    function getArticle(uint _id) public view returns (string memory, uint) {
         return (articles[_id].description, articles[_id].price);
     }
 

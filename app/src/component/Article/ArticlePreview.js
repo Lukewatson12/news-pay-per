@@ -40,12 +40,12 @@ const ArticlePreview = (props) => {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    title="ArticlePreview title"
+                    title="Article title"
                     image={"https://www.blockassets.io/wp-content/uploads/2017/03/Background-1356x430.jpg"}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        ArticlePreview title
+                        Article title
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         In tristique bibendum quam vitae hendrerit. Pellentesque lacus est, placerat aliquet interdum
