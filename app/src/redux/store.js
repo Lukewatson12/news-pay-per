@@ -1,15 +1,17 @@
+import {applyMiddleware, compose, createStore} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from "./reducers";
 import rootSaga from './sagas';
-import {generateStore} from "@drizzle/store";
-import drizzleOptions from "../drizzleOptions";
 
+const sagaMiddleware = createSagaMiddleware();
 
-const store = generateStore({
-        "drizzleOptions": drizzleOptions,
-        "disableReduxDevTools": false,
-        "reducers": rootReducer,
-        "appSagas": [rootSaga],
-    },
+const middleWares = applyMiddleware(sagaMiddleware);
+
+const store = createStore(
+    rootReducer,
+    compose(middleWares)
 );
-console.log(store)
+
+sagaMiddleware.run(rootSaga);
+
 export default store;

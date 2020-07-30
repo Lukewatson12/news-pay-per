@@ -52,21 +52,15 @@ const Wrapper = (props) => {
                                 path={"/"}
                                 exact={true}
                                 children={
-                                    <WriteArticle
-                                        // drizzle={drizzle}
-                                        // drizzleState={drizzleState}
-                                    />
+                                    <WriteArticle/>
                                 }
                             />
                             <Route
                                 key={"article"}
-                                path="/articles/:articleId"
+                                path="/articles/:id"
                                 exact={true}
                                 children={
-                                    <ArticlePage
-                                        // drizzle={drizzle}
-                                        // drizzleState={drizzleState}
-                                    />
+                                    <ArticlePage/>
                                 }
                             />
                             <Route
@@ -74,10 +68,7 @@ const Wrapper = (props) => {
                                 path={"/articles"}
                                 exact={true}
                                 children={
-                                    <ListArticles
-                                        // drizzle={drizzle}
-                                        // drizzleState={drizzleState}
-                                    />
+                                    <ListArticles/>
                                 }
                             />
                         </Switch>
