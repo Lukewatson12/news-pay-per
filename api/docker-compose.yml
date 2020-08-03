@@ -3,14 +3,18 @@ version: "3"
 services:
   mysql:
     image: mysql:8.0.21
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
+    volumes:
+      - "db:/var/lib/mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-    networks:
-      - newspayperNetwork
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "root"
+      MYSQL_DATABASE: "NewsPayPer"
     ports:
       - 3306:3306
+    networks:
+      - newspayperNetwork
 
   node:
     build:
@@ -20,5 +24,7 @@ services:
       - 8080:8080
     networks:
       - newspayperNetwork
+volumes:
+  db:
 networks:
   newspayperNetwork:
