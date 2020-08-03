@@ -1,7 +1,18 @@
 version: "3"
 
 services:
-  news-pay-per-api:
+  mysql:
+    image: mysql:8.0.21
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - newspayperNetwork
+    ports:
+      - 3306:3306
+
+  node:
     build:
       context: .
       dockerfile: docker/node/Dockerfile
