@@ -27,9 +27,7 @@ Running the backend application is simple. The application is stored under `./ap
 
 `cd ./api`
 
-To build `make start_api`
-
-To run `docker run -p 8080:8080 -d luke.watson/node-web-app`
+To run `make start_api`
 
 #### The frontend
 
@@ -37,7 +35,7 @@ The frontend is stored under `./app`
 
 `cd ./app`
 
-And start with `yarn start`
+And start with `make start_app`
 
 #### Todo
 
@@ -45,4 +43,3 @@ And start with `yarn start`
 - Add persistence to backend so articles can be saved
 - Simplify smart contract logic and remove expensive data storage
 - Fix issues with frontend rendering and add test cases
-- Don't pass drizzle & drizzle store around the app
