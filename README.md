@@ -21,6 +21,8 @@ To start the truffle server run `truffle develop`
 
 Then compile and migrate the smart contract `compile` `migrate`
 
+Finally to ensure that both the API & the App have access to the compiled contracts run make `init_truffle` from the root directory
+
 #### The backend
 
 Running the backend application is simple. The application is stored under `./api`
